@@ -5,7 +5,7 @@ Una tarea se considera terminada para el alcance acordado cuando:
 - Cumple criterios de aceptación y respeta la arquitectura del módulo.
 - Incluye pruebas adecuadas, análisis estático y CI aprobados.
 - No introduce secretos y actualiza documentación cuando corresponde.
-- Tiene evidencia verificable y revisión según las reglas vigentes.
+- Tiene evidencia verificable; la revisión independiente es recomendable, aunque no obligatoria.
 - Documenta riesgos, limitaciones y dependencias de backend.
 
 ## Estados de evidencia

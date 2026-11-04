@@ -22,4 +22,4 @@ Indica comandos y resultados, evidencia visual cuando aplique y lo que no se pro
 - [ ] Hay pruebas apropiadas, formato y análisis ejecutados; CI aprobada.
 - [ ] No se incluyen secretos y la documentación está actualizada si aplica.
 - [ ] Se adjunta evidencia verificable y se indican los estados pendientes.
-- [ ] El PR recibió la revisión requerida según las reglas vigentes.
+- [ ] Se documentó la revisión independiente, si se realizó, y se resolvieron las conversaciones cuando corresponda.

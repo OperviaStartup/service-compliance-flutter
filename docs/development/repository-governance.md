@@ -4,11 +4,11 @@ Auditoría del 4 de noviembre de 2026: `main` y `develop` apuntaban a `745c97d`;
 
 El job exitoso de GitHub Actions observado es `validate`, del workflow `Flutter CI`: [ejecución verificada](https://github.com/OperviaStartup/service-compliance-flutter/actions/runs/41775141401). El formulario de rulesets ofrece el check `validate` con origen GitHub Actions. La CI del [PR #3](https://github.com/OperviaStartup/service-compliance-flutter/pull/3) pasó para el commit `87d38dd`; verificar los resultados del commit más reciente del PR antes de fusionarlo.
 
-## Protección actual y propuesta pendiente
+## Protección actual
 
-Para `main`, la regla [protect-main](https://github.com/OperviaStartup/service-compliance-flutter/settings/rules/26550801) quedó activa el 4 de noviembre de 2026 con PR obligatorio, una aprobación, check `validate` de GitHub Actions, conversaciones resueltas y prohibición de force push y eliminación. No se configuraron excepciones. Para `develop` se propone PR y `validate` obligatorios, una revisión si existe otro revisor disponible, impedir force push y eliminación; esta protección sigue pendiente de aprobación y activación.
+Las reglas [protect-main](https://github.com/OperviaStartup/service-compliance-flutter/settings/rules/26550801) y [protect-develop](https://github.com/OperviaStartup/service-compliance-flutter/settings/rules/26551707) están activas. Ambas exigen PR y el check `validate` de GitHub Actions; también bloquean force push y eliminación. `main` exige resolver las conversaciones de revisión. El 4 de noviembre de 2026 se redujo de una a cero la cantidad de aprobaciones obligatorias para evitar bloqueos por falta de revisores. No se configuraron excepciones ni bypass. El autor con permisos suficientes puede integrar su PR cuando se cumplan las reglas. La revisión de otra persona sigue siendo recomendable cuando esté disponible, especialmente para cambios de riesgo.
 
-Antes de aplicarlas, comprobar plan, reglas heredadas, permisos administrativos y al menos una persona distinta del autor con acceso suficiente para revisar e integrar. Confirmar la disponibilidad del equipo para no bloquear AV2. Comunicar el impacto y obtener autorización explícita. Si alguna opción no está disponible, documentar el motivo exacto y usar revisión y CI manuales mientras tanto; no cambiar permisos ni visibilidad como solución automática.
+Antes de modificar estas reglas, comprobar el plan, las reglas heredadas y los permisos administrativos; evaluar también la disponibilidad del equipo y el impacto en AV2. Comunicar cualquier cambio y obtener la autorización correspondiente. No cambiar permisos ni visibilidad como solución automática.
 
 ## CODEOWNERS propuesto, sin activar
 
