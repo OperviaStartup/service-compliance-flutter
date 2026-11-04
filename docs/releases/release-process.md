@@ -13,13 +13,13 @@ El número `+build` identifica compilaciones y no forma parte de la precedencia 
 1. Acuerda alcance, compatibilidad y versión a partir del estado integrado en `develop`; registra historias y dependencias.
 2. Crea `release/X.Y.Z` desde `develop`; actualiza `pubspec.yaml`, build number cuando corresponda, documentación y notas. No se realiza este cambio solo para ensayar el proceso.
 3. Ejecuta formato, análisis, pruebas y CI; compila y prueba en los dispositivos y entornos que exija la entrega. Registra qué backend y revisión usaste, o indica que no hubo integración real.
-4. Abre PR revisado a `main`; espera la aprobación requerida y CI verde. Fusiona solo con autorización y conforme a las reglas vigentes.
+4. Abre un PR a `main`; espera CI verde y resuelve las conversaciones de revisión. Una aprobación humana no es obligatoria, aunque se recomienda una revisión independiente cuando sea posible. Fusiona solo con autorización y conforme a las reglas vigentes.
 5. Confirma el SHA final en `main`; crea el tag anotado `vX.Y.Z` apuntando a ese commit. Crea una GitHub Release con ese tag solo cuando esté autorizada. Describe cambios, pruebas, compatibilidad y limitaciones; enlaza PR y tareas. Publicar una release no equivale a desplegar.
 6. Integra los ajustes de la release en `develop` mediante PR o avance rápido cuando la política vigente lo permita. Comprueba ambas ramas y el tag; elimina la rama temporal solo después de la integración y con la autorización correspondiente.
 
 ## Hotfix
 
-Crea `hotfix/<modulo>-<descripcion>` desde `main`. Prepara el ajuste y la versión apropiada, valida y abre PR a `main`. Tras su aprobación e integración, etiqueta el commit correcto y lleva la corrección a `develop`; elimina la rama solo después de completar ambas integraciones y contar con autorización. No muevas ni borres tags existentes.
+Crea `hotfix/<modulo>-<descripcion>` desde `main`. Prepara el ajuste y la versión apropiada, valida y abre PR a `main`. Tras cumplir las reglas e integrarlo, etiqueta el commit correcto y lleva la corrección a `develop`; elimina la rama solo después de completar ambas integraciones y contar con autorización. No muevas ni borres tags existentes.
 
 ## Plantilla de notas
 
