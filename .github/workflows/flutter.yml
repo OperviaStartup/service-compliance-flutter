@@ -17,5 +17,6 @@ jobs:
           channel: stable
           flutter-version: '3.47.9'
       - run: flutter pub get --enforce-lockfile
+      - run: dart format --output=none --set-exit-if-changed lib test
       - run: flutter analyze
       - run: flutter test

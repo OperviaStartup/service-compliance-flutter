@@ -1,0 +1,28 @@
+# EJEMPLO ILUSTRATIVO: no representa una integración realizada ni versiones reales.
+baseline_id: EJEMPLO-AV2-01
+validated_at: null # Completar después de validar; formato ISO 8601.
+compatibility_status: not_validated
+integration_tests: [] # Registrar pruebas reales y evidencias, no expectativas.
+known_limitations:
+  - Ejemplo sin validación; sustituir todos los campos antes de usarlo.
+components:
+  - name: backend
+    repository: https://github.com/OperviaStartup/serviceComplianceAPI
+    version_or_tag: EXAMPLE_ONLY
+    commit_sha: EXAMPLE_ONLY
+    api_contract: EXAMPLE_ONLY
+  - name: flutter
+    repository: https://github.com/OperviaStartup/service-compliance-flutter
+    version_or_tag: EXAMPLE_ONLY
+    commit_sha: EXAMPLE_ONLY
+    api_contract: EXAMPLE_ONLY
+  - name: kotlin
+    repository: https://github.com/OperviaStartup/service-compliance-kotlin
+    version_or_tag: EXAMPLE_ONLY
+    commit_sha: EXAMPLE_ONLY
+    api_contract: EXAMPLE_ONLY
+  - name: landing
+    repository: https://github.com/OperviaStartup/service-compliance-landingpage
+    version_or_tag: EXAMPLE_ONLY
+    commit_sha: EXAMPLE_ONLY
+    api_contract: EXAMPLE_ONLY
