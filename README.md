@@ -2,6 +2,8 @@
 
 Base de una aplicación Flutter para supervisión de obligaciones operativas. Las secciones de autenticación, obligaciones, cumplimiento e incidencias son espacios iniciales: todavía no autentican ni consultan datos reales.
 
+Versión inicial: `0.0.1` (build `1`).
+
 ## Requisitos y ejecución
 
 - Flutter estable 3.47.9 y Dart 3.13.7 (versiones usadas en esta preparación). Consultar la [instalación oficial](https://docs.flutter.dev/install/manual).
