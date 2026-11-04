@@ -56,7 +56,9 @@ Una obligación expone `id`, `title`, `description`, `siteName`, `assignedOperat
 
 ## Trabajo en equipo y pendientes
 
-Usar ramas `feature/...` desde la rama de integración que acuerde el equipo, con revisiones y merges según Git Flow. El equipo debe acordar la creación y el uso de `develop` como rama de integración.
+Crear ramas de trabajo como `feature/...`, `fix/...` o `test/...` desde `develop` e integrarlas mediante PR a `develop`. Preparar cada versión en `release/X.Y.Z` desde `develop`, integrarla en `main` y devolver cualquier ajuste de la release a `develop`. Tras la integración se pueden eliminar las ramas de trabajo y release; `main` y `develop` permanecen. Las versiones siguen SemVer: cambios incompatibles incrementan X, funcionalidades compatibles incrementan Y y correcciones compatibles incrementan Z; durante 0.y.z la API aún puede cambiar.
+
+GitHub Actions ejecuta `flutter analyze` y `flutter test` en pushes y PR usando Flutter 3.47.9. La integración con la API y las compilaciones móviles no forman parte de ese flujo todavía.
 
 Para AV2: acordar alcance y contratos de supervisión e incidencias; implementar autenticación y almacenamiento seguro de sesión, autorización, módulos y manejo de errores reales; validar conectividad y CORS, pruebas de integración y UX en dispositivos. No subir archivos `.env`, credenciales, certificados de firma ni secretos. El `.gitignore` reduce el riesgo, pero revisa cada cambio antes de confirmarlo.
 
