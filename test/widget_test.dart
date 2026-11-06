@@ -7,10 +7,7 @@ void main() {
     expect(find.text('Consulta de obligaciones operativas.'), findsOneWidget);
     await tester.tap(find.text('Incidencias').last);
     await tester.pumpAndSettle();
-    expect(
-      find.text('Espacio reservado para la gestión de incidencias.'),
-      findsOneWidget,
-    );
+    expect(find.textContaining('DATOS DE MUESTRA'), findsOneWidget);
     await tester.tap(find.text('Cuenta').last);
     await tester.pumpAndSettle();
     expect(find.text('Acceso y perfil de usuario.'), findsOneWidget);
