@@ -56,13 +56,13 @@ void main() {
       await tester.tap(find.text('Faltan insumos'));
       final send = find.text('ENVIAR PARA REVISIÓN');
       await tester.scrollUntilVisible(
-        send,
+        send.hitTestable(),
         180,
         scrollable: find.byType(Scrollable).first,
       );
       await tester.tap(send);
       await tester.pumpAndSettle();
-      expect(find.text('Impedimento registrado'), findsOneWidget);
+      expect(find.text('Simulación de reporte'), findsOneWidget);
       expectSharedBackdrop();
     },
   );

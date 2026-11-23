@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../app/opervia_theme.dart';
+
 import '../../../core/network/api_client.dart';
 import '../data/impediment.dart';
 import '../data/incidents_repository.dart';
@@ -85,14 +87,16 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
         borderRadius: BorderRadius.circular(14),
         onTap: _sending ? null : () => setState(() => _reason = reason),
         child: WhiteCard(
-          color: selected ? FigmaColors.greenBg : Colors.white,
-          borderColor: selected ? FigmaColors.green : null,
+          color: selected ? OperviaColors.tint : Colors.white,
+          borderColor: selected ? OperviaColors.primary : null,
           child: Row(
             children: [
               IconSquare(
                 icon: _iconFor(reason),
-                background: selected ? Colors.white : FigmaColors.tint,
-                foreground: selected ? FigmaColors.green : FigmaColors.primary,
+                background: selected ? Colors.white : OperviaColors.tint,
+                foreground: selected
+                    ? OperviaColors.primary
+                    : OperviaColors.primary,
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -103,8 +107,8 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                       reason.title,
                       style: const TextStyle(
                         fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: FigmaColors.navy,
+                        fontWeight: FontWeight.w700,
+                        color: OperviaColors.navy,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -112,15 +116,17 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                       reason.description,
                       style: const TextStyle(
                         fontSize: 12,
-                        color: FigmaColors.muted,
+                        color: OperviaColors.muted,
                       ),
                     ),
                   ],
                 ),
               ),
               Icon(
-                selected ? Icons.check_circle : Icons.radio_button_unchecked,
-                color: selected ? FigmaColors.green : FigmaColors.muted,
+                selected
+                    ? Icons.radio_button_checked
+                    : Icons.radio_button_unchecked,
+                color: selected ? OperviaColors.primary : OperviaColors.muted,
               ),
             ],
           ),
@@ -132,131 +138,38 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const FigmaHeader(title: 'Reportar Impedimento'),
-            if (widget.repository.isSampleData) const SampleDataBanner(),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-                children: [
-                  Row(
-                    children: [
-                      const IconSquare(icon: Icons.assignment_outlined),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'TAREA EN CURSO',
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: FigmaColors.muted,
-                              ),
-                            ),
-                            Text(
-                              widget.task.name,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w800,
-                                color: FigmaColors.navy,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Selecciona el motivo principal:',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w800,
-                      color: FigmaColors.navy,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  for (final reason in ImpedimentReason.values)
-                    _reasonCard(reason),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      const Expanded(
-                        child: Text(
-                          'Añadir detalle (opcional)',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w800,
-                            color: FigmaColors.navy,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        '${_detail.text.length}/120',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: FigmaColors.muted,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  WhiteCard(
-                    child: TextField(
-                      controller: _detail,
-                      enabled: !_sending,
-                      maxLength: 120,
-                      maxLines: 3,
-                      onChanged: (_) => setState(() {}),
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        counterText: '',
-                        hintText: 'Describe brevemente lo ocurrido',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  WhiteCard(
-                    color: FigmaColors.amberBg,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: AppBar(title: const Text('Reportar Impedimento')),
+      body: OperviaContent(
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (widget.repository.isSampleData) const SampleDataBanner(),
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                  children: [
+                    Row(
                       children: [
-                        Container(
-                          width: 32,
-                          height: 32,
-                          decoration: const BoxDecoration(
-                            color: FigmaColors.amber,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.info_outline,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                        ),
+                        const IconSquare(icon: Icons.assignment_outlined),
                         const SizedBox(width: 12),
-                        const Expanded(
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Revisión de Supervisor',
+                              const Text(
+                                'TAREA EN CURSO',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  color: FigmaColors.navy,
+                                  fontSize: 11,
+                                  color: OperviaColors.muted,
                                 ),
                               ),
-                              SizedBox(height: 2),
                               Text(
-                                'Esta solicitud será enviada como excepción '
-                                'para revisión del supervisor.',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: FigmaColors.navy,
+                                widget.task.name,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: OperviaColors.navy,
                                 ),
                               ),
                             ],
@@ -264,36 +177,131 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                         ),
                       ],
                     ),
-                  ),
-                  if (_error != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Text(
-                        _error!,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: FigmaColors.error),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Selecciona el motivo principal:',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: OperviaColors.navy,
                       ),
                     ),
-                  const SizedBox(height: 16),
-                  PrimaryButton(
-                    label: 'ENVIAR PARA REVISIÓN',
-                    icon: Icons.send_outlined,
-                    loading: _sending,
-                    onPressed: _submit,
-                  ),
-                  TextButton(
-                    onPressed: _sending
-                        ? null
-                        : () => Navigator.of(context).pop(),
-                    child: const Text(
-                      'Descartar y volver a la tarea',
-                      style: TextStyle(color: FigmaColors.navy),
+                    const SizedBox(height: 10),
+                    for (final reason in ImpedimentReason.values)
+                      _reasonCard(reason),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        const Expanded(
+                          child: Text(
+                            'Añadir detalle (opcional)',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: OperviaColors.navy,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '${_detail.text.length}/120',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: OperviaColors.muted,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    WhiteCard(
+                      child: TextField(
+                        controller: _detail,
+                        enabled: !_sending,
+                        maxLength: 120,
+                        maxLines: 3,
+                        onChanged: (_) => setState(() {}),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          counterText: '',
+                          hintText: 'Describe brevemente lo ocurrido',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    WhiteCard(
+                      color: OperviaColors.amberBg,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 32,
+                            height: 32,
+                            decoration: const BoxDecoration(
+                              color: OperviaColors.amber,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.info_outline,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          const Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Revisión de Supervisor',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: OperviaColors.navy,
+                                  ),
+                                ),
+                                SizedBox(height: 2),
+                                Text(
+                                  'Esta solicitud será enviada como excepción '
+                                  'para revisión del supervisor.',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: OperviaColors.navy,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (_error != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: Text(
+                          _error!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: OperviaColors.error),
+                        ),
+                      ),
+                    const SizedBox(height: 16),
+                    PrimaryButton(
+                      label: 'ENVIAR PARA REVISIÓN',
+                      icon: Icons.send_outlined,
+                      loading: _sending,
+                      onPressed: _submit,
+                    ),
+                    TextButton(
+                      onPressed: _sending
+                          ? null
+                          : () => Navigator.of(context).pop(),
+                      child: const Text(
+                        'Descartar y volver a la tarea',
+                        style: TextStyle(color: OperviaColors.navy),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

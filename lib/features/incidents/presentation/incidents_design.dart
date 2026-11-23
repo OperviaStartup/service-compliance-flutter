@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Colores aproximados tomados del Figma (US07). Ajustar con los tokens reales.
-abstract final class FigmaColors {
-  static const primary = Color(0xFF1D6FEA);
-  static const navy = Color(0xFF0B1F4B);
-  static const muted = Color(0xFF5B6B86);
-  static const tint = Color(0xFFE4EEFC);
-  static const greenBg = Color(0xFFDDF4E8);
-  static const green = Color(0xFF1FA971);
-  static const amberBg = Color(0xFFFFF1D6);
-  static const amber = Color(0xFFE59A00);
-  static const error = Color(0xFFE5484D);
-}
+import '../../../app/opervia_theme.dart';
 
 class WhiteCard extends StatelessWidget {
   const WhiteCard({
@@ -19,7 +8,7 @@ class WhiteCard extends StatelessWidget {
     required this.child,
     this.color = Colors.white,
     this.borderColor,
-    this.padding = const EdgeInsets.all(14),
+    this.padding = const EdgeInsets.all(16),
   });
 
   final Widget child;
@@ -32,7 +21,7 @@ class WhiteCard extends StatelessWidget {
     padding: padding,
     decoration: BoxDecoration(
       color: color,
-      borderRadius: BorderRadius.circular(14),
+      borderRadius: BorderRadius.circular(12),
       border: borderColor == null
           ? null
           : Border.all(color: borderColor!, width: 1.5),
@@ -52,8 +41,8 @@ class IconSquare extends StatelessWidget {
   const IconSquare({
     super.key,
     required this.icon,
-    this.background = FigmaColors.tint,
-    this.foreground = FigmaColors.primary,
+    this.background = OperviaColors.tint,
+    this.foreground = OperviaColors.primary,
   });
 
   final IconData icon;
@@ -69,77 +58,6 @@ class IconSquare extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
     ),
     child: Icon(icon, color: foreground, size: 22),
-  );
-}
-
-/// Encabezado de las pantallas internas: volver, título, campana y avatar.
-class FigmaHeader extends StatelessWidget {
-  const FigmaHeader({super.key, required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
-    child: Row(
-      children: [
-        IconButton(
-          tooltip: 'Volver',
-          onPressed: () => Navigator.of(context).maybePop(),
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            size: 20,
-            color: FigmaColors.navy,
-          ),
-        ),
-        Expanded(
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-              color: FigmaColors.navy,
-            ),
-          ),
-        ),
-        const _BellAndAvatar(),
-      ],
-    ),
-  );
-}
-
-class _BellAndAvatar extends StatelessWidget {
-  const _BellAndAvatar();
-
-  @override
-  Widget build(BuildContext context) => Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Stack(
-        children: [
-          const Icon(Icons.notifications_none, color: FigmaColors.navy),
-          Positioned(
-            right: 2,
-            top: 2,
-            child: Container(
-              width: 8,
-              height: 8,
-              decoration: const BoxDecoration(
-                color: FigmaColors.error,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-        ],
-      ),
-      const SizedBox(width: 12),
-      const CircleAvatar(
-        radius: 18,
-        backgroundColor: FigmaColors.tint,
-        child: Icon(Icons.person, color: FigmaColors.primary),
-      ),
-    ],
   );
 }
 
@@ -161,10 +79,10 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) => FilledButton(
     onPressed: loading ? null : onPressed,
     style: FilledButton.styleFrom(
-      backgroundColor: FigmaColors.primary,
+      backgroundColor: OperviaColors.primary,
       foregroundColor: Colors.white,
-      minimumSize: const Size.fromHeight(52),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      minimumSize: const Size.fromHeight(48),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -183,7 +101,7 @@ class PrimaryButton extends StatelessWidget {
             label,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               letterSpacing: 0.5,
             ),
           ),
@@ -199,17 +117,16 @@ class SampleDataBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    color: FigmaColors.amberBg,
+    color: OperviaColors.amberBg,
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     child: const Row(
       children: [
-        Icon(Icons.science_outlined, size: 18, color: FigmaColors.amber),
+        Icon(Icons.info_outline, size: 18, color: OperviaColors.amber),
         SizedBox(width: 8),
         Expanded(
           child: Text(
-            'DATOS DE MUESTRA · Sin conexión con el backend '
-            '(aún no existe el contrato de incidencias).',
-            style: TextStyle(fontSize: 12, color: FigmaColors.navy),
+            'DATOS DE MUESTRA · Esta vista simula el reporte.',
+            style: TextStyle(fontSize: 12, color: OperviaColors.navy),
           ),
         ),
       ],
