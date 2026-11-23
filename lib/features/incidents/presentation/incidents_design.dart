@@ -13,25 +13,6 @@ abstract final class FigmaColors {
   static const error = Color(0xFFE5484D);
 }
 
-class GradientBackground extends StatelessWidget {
-  const GradientBackground({super.key, required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) => DecoratedBox(
-    decoration: const BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Color(0xFFBFDDFB), Color(0xFFF4F9FF), Colors.white],
-        stops: [0, 0.45, 1],
-      ),
-    ),
-    child: child,
-  );
-}
-
 class WhiteCard extends StatelessWidget {
   const WhiteCard({
     super.key,
@@ -197,11 +178,14 @@ class PrimaryButton extends StatelessWidget {
         else
           Icon(icon, size: 20),
         const SizedBox(width: 10),
-        Text(
-          label,
-          style: const TextStyle(
-            fontWeight: FontWeight.w800,
-            letterSpacing: 0.5,
+        Flexible(
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontWeight: FontWeight.w800,
+              letterSpacing: 0.5,
+            ),
           ),
         ),
       ],

@@ -132,38 +132,130 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: GradientBackground(
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const FigmaHeader(title: 'Reportar Impedimento'),
-              if (widget.repository.isSampleData) const SampleDataBanner(),
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-                  children: [
-                    Row(
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const FigmaHeader(title: 'Reportar Impedimento'),
+            if (widget.repository.isSampleData) const SampleDataBanner(),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                children: [
+                  Row(
+                    children: [
+                      const IconSquare(icon: Icons.assignment_outlined),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'TAREA EN CURSO',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: FigmaColors.muted,
+                              ),
+                            ),
+                            Text(
+                              widget.task.name,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800,
+                                color: FigmaColors.navy,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Selecciona el motivo principal:',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                      color: FigmaColors.navy,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  for (final reason in ImpedimentReason.values)
+                    _reasonCard(reason),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          'Añadir detalle (opcional)',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w800,
+                            color: FigmaColors.navy,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '${_detail.text.length}/120',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: FigmaColors.muted,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  WhiteCard(
+                    child: TextField(
+                      controller: _detail,
+                      enabled: !_sending,
+                      maxLength: 120,
+                      maxLines: 3,
+                      onChanged: (_) => setState(() {}),
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        counterText: '',
+                        hintText: 'Describe brevemente lo ocurrido',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  WhiteCard(
+                    color: FigmaColors.amberBg,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const IconSquare(icon: Icons.assignment_outlined),
+                        Container(
+                          width: 32,
+                          height: 32,
+                          decoration: const BoxDecoration(
+                            color: FigmaColors.amber,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.info_outline,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
                         const SizedBox(width: 12),
-                        Expanded(
+                        const Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'TAREA EN CURSO',
+                              Text(
+                                'Revisión de Supervisor',
                                 style: TextStyle(
-                                  fontSize: 11,
-                                  color: FigmaColors.muted,
+                                  fontWeight: FontWeight.w800,
+                                  color: FigmaColors.navy,
                                 ),
                               ),
+                              SizedBox(height: 2),
                               Text(
-                                widget.task.name,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w800,
+                                'Esta solicitud será enviada como excepción '
+                                'para revisión del supervisor.',
+                                style: TextStyle(
+                                  fontSize: 12,
                                   color: FigmaColors.navy,
                                 ),
                               ),
@@ -172,131 +264,36 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Selecciona el motivo principal:',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: FigmaColors.navy,
+                  ),
+                  if (_error != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Text(
+                        _error!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: FigmaColors.error),
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    for (final reason in ImpedimentReason.values)
-                      _reasonCard(reason),
-                    const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        const Expanded(
-                          child: Text(
-                            'Añadir detalle (opcional)',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w800,
-                              color: FigmaColors.navy,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          '${_detail.text.length}/120',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: FigmaColors.muted,
-                          ),
-                        ),
-                      ],
+                  const SizedBox(height: 16),
+                  PrimaryButton(
+                    label: 'ENVIAR PARA REVISIÓN',
+                    icon: Icons.send_outlined,
+                    loading: _sending,
+                    onPressed: _submit,
+                  ),
+                  TextButton(
+                    onPressed: _sending
+                        ? null
+                        : () => Navigator.of(context).pop(),
+                    child: const Text(
+                      'Descartar y volver a la tarea',
+                      style: TextStyle(color: FigmaColors.navy),
                     ),
-                    const SizedBox(height: 8),
-                    WhiteCard(
-                      child: TextField(
-                        controller: _detail,
-                        enabled: !_sending,
-                        maxLength: 120,
-                        maxLines: 3,
-                        onChanged: (_) => setState(() {}),
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          counterText: '',
-                          hintText: 'Describe brevemente lo ocurrido',
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    WhiteCard(
-                      color: FigmaColors.amberBg,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 32,
-                            height: 32,
-                            decoration: const BoxDecoration(
-                              color: FigmaColors.amber,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.info_outline,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          const Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Revisión de Supervisor',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    color: FigmaColors.navy,
-                                  ),
-                                ),
-                                SizedBox(height: 2),
-                                Text(
-                                  'Esta solicitud será enviada como excepción '
-                                  'para revisión del supervisor.',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: FigmaColors.navy,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (_error != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 12),
-                        child: Text(
-                          _error!,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(color: FigmaColors.error),
-                        ),
-                      ),
-                    const SizedBox(height: 16),
-                    PrimaryButton(
-                      label: 'ENVIAR PARA REVISIÓN',
-                      icon: Icons.send_outlined,
-                      loading: _sending,
-                      onPressed: _submit,
-                    ),
-                    TextButton(
-                      onPressed: _sending
-                          ? null
-                          : () => Navigator.of(context).pop(),
-                      child: const Text(
-                        'Descartar y volver a la tarea',
-                        style: TextStyle(color: FigmaColors.navy),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

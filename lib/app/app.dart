@@ -4,6 +4,7 @@ import '../features/authentication/presentation/authentication_page.dart';
 import '../features/compliance/presentation/compliance_page.dart';
 import '../features/incidents/presentation/incidents_page.dart';
 import '../features/obligations/presentation/obligations_page.dart';
+import 'opervia_backdrop.dart';
 
 class OperviaApp extends StatelessWidget {
   const OperviaApp({super.key});
@@ -14,7 +15,13 @@ class OperviaApp extends StatelessWidget {
     theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff205b62)),
       useMaterial3: true,
+      scaffoldBackgroundColor: Colors.transparent,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+      ),
     ),
+    builder: (context, child) => OperviaBackdrop(child: child!),
     home: const HomePage(),
   );
 }
