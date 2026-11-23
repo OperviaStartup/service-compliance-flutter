@@ -6,10 +6,16 @@ class OperviaBackdrop extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => CustomPaint(
-    painter: const _BackdropPainter(),
-    child: SizedBox.expand(child: child),
-  );
+  Widget build(BuildContext context) {
+    final topSpacing = MediaQuery.sizeOf(context).height < 480 ? 16.0 : 40.0;
+    return CustomPaint(
+      painter: const _BackdropPainter(),
+      child: Padding(
+        padding: EdgeInsets.only(top: topSpacing),
+        child: SizedBox.expand(child: child),
+      ),
+    );
+  }
 }
 
 class _BackdropPainter extends CustomPainter {

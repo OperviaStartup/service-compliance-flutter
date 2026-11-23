@@ -13,7 +13,7 @@ class OperviaApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
     title: 'Opervia Service Compliance',
     debugShowCheckedModeBanner: false,
-    theme: operviaTheme(),
+    theme: operviaTheme(compact: MediaQuery.sizeOf(context).width < 360),
     builder: (context, child) => OperviaBackdrop(child: child!),
     home: const HomePage(),
   );

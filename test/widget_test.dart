@@ -26,7 +26,9 @@ void main() {
 
       void expectSharedBackdrop() {
         expect(tester.element(find.byType(OperviaBackdrop)), same(backdrop));
-        final context = tester.element(find.byType(Scaffold).last);
+        final scaffold = find.byType(Scaffold).last;
+        final context = tester.element(scaffold);
+        expect(tester.getTopLeft(scaffold).dy, 40);
         expect(Theme.of(context).scaffoldBackgroundColor, Colors.transparent);
         expect(
           tester.widget<Scaffold>(find.byType(Scaffold).last).backgroundColor,
@@ -35,6 +37,10 @@ void main() {
       }
 
       expectSharedBackdrop();
+      final navigationIcon = tester.element(
+        find.byIcon(Icons.assignment_turned_in_outlined),
+      );
+      expect(IconTheme.of(navigationIcon).size, 32);
       for (final tab in ['Cumplimiento', 'Cuenta', 'Incidencias']) {
         await tester.tap(find.text(tab).last);
         await tester.pumpAndSettle();

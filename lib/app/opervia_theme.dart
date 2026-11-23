@@ -13,7 +13,7 @@ abstract final class OperviaColors {
   static const error = Color(0xFFB32635);
 }
 
-ThemeData operviaTheme() {
+ThemeData operviaTheme({required bool compact}) {
   final base = ThemeData(
     useMaterial3: true,
     fontFamily: 'IBM Plex Sans',
@@ -55,10 +55,18 @@ ThemeData operviaTheme() {
       ),
       bodyMedium: base.textTheme.bodyMedium?.copyWith(height: 1.4),
     ),
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       foregroundColor: OperviaColors.navy,
+      iconTheme: const IconThemeData(size: 28),
+      titleTextStyle: compact
+          ? base.textTheme.titleLarge?.copyWith(
+              color: OperviaColors.navy,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+            )
+          : null,
       centerTitle: true,
     ),
     cardTheme: CardThemeData(
@@ -75,6 +83,7 @@ ThemeData operviaTheme() {
       indicatorColor: OperviaColors.tint,
       iconTheme: WidgetStateProperty.resolveWith(
         (states) => IconThemeData(
+          size: 32,
           color: states.contains(WidgetState.selected)
               ? OperviaColors.primary
               : OperviaColors.muted,
@@ -82,6 +91,8 @@ ThemeData operviaTheme() {
       ),
       labelTextStyle: WidgetStateProperty.resolveWith(
         (states) => base.textTheme.labelMedium?.copyWith(
+          fontSize: compact ? 11 : 13,
+          letterSpacing: 0,
           color: states.contains(WidgetState.selected)
               ? OperviaColors.primary
               : OperviaColors.muted,
