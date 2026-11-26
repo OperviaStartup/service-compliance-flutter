@@ -11,24 +11,30 @@ class FeaturePlaceholder extends StatelessWidget {
   final String description;
   final IconData icon;
   @override
-  Widget build(BuildContext context) => Center(
-    child: ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 480),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 52, color: Theme.of(context).colorScheme.primary),
-            const SizedBox(height: 20),
-            Text(title, style: Theme.of(context).textTheme.headlineSmall),
-            const SizedBox(height: 12),
-            Text(description, textAlign: TextAlign.center),
-            const SizedBox(height: 12),
-            const Text('Funcionalidad pendiente de implementación.'),
-          ],
+  Widget build(BuildContext context) => ListView(
+    padding: const EdgeInsets.all(16),
+    children: [
+      Text(title, style: Theme.of(context).textTheme.headlineSmall),
+      const SizedBox(height: 16),
+      Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                icon,
+                size: 24,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(height: 12),
+              Text(description, style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 8),
+              const Text('Funcionalidad pendiente de implementación.'),
+            ],
+          ),
         ),
       ),
-    ),
+    ],
   );
 }

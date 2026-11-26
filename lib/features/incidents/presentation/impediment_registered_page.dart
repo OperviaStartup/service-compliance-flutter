@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../app/opervia_theme.dart';
+
 import '../data/impediment.dart';
 import 'incidents_design.dart';
 
@@ -23,13 +25,12 @@ class ImpedimentRegisteredPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final report = record.report;
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: GradientBackground(
+      appBar: AppBar(title: const Text('Registro de impedimento')),
+      body: OperviaContent(
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const FigmaHeader(title: ''),
               if (isSample) const SampleDataBanner(),
               Expanded(
                 child: ListView(
@@ -38,29 +39,33 @@ class ImpedimentRegisteredPage extends StatelessWidget {
                     const Center(
                       child: CircleAvatar(
                         radius: 40,
-                        backgroundColor: FigmaColors.amberBg,
+                        backgroundColor: OperviaColors.amberBg,
                         child: Icon(
                           Icons.pending_actions,
                           size: 40,
-                          color: FigmaColors.amber,
+                          color: OperviaColors.amber,
                         ),
                       ),
                     ),
                     const SizedBox(height: 14),
-                    const Text(
-                      'Impedimento registrado',
+                    Text(
+                      isSample
+                          ? 'Simulación de reporte'
+                          : 'Impedimento registrado',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: FigmaColors.navy,
+                        fontWeight: FontWeight.w700,
+                        color: OperviaColors.navy,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Enviado hoy, $_time',
+                      isSample
+                          ? 'Ejemplo generado a las $_time'
+                          : 'Enviado hoy, $_time',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: FigmaColors.muted),
+                      style: const TextStyle(color: OperviaColors.muted),
                     ),
                     const SizedBox(height: 18),
                     Row(
@@ -71,7 +76,7 @@ class ImpedimentRegisteredPage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
-                              color: FigmaColors.muted,
+                              color: OperviaColors.muted,
                             ),
                           ),
                         ),
@@ -81,15 +86,15 @@ class ImpedimentRegisteredPage extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: FigmaColors.amberBg,
+                            color: OperviaColors.amberBg,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Text(
-                            'Con excepción',
+                            'Por revisar',
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
-                              color: FigmaColors.amber,
+                              color: OperviaColors.amber,
                             ),
                           ),
                         ),
@@ -110,8 +115,8 @@ class ImpedimentRegisteredPage extends StatelessWidget {
                       icon: Icons.lock_outline,
                       label: 'Motivo reportado',
                       value: report.reason.title,
-                      background: FigmaColors.amberBg,
-                      foreground: FigmaColors.amber,
+                      background: OperviaColors.amberBg,
+                      foreground: OperviaColors.amber,
                     ),
                     if (report.detail.isNotEmpty)
                       _DetailTile(
@@ -121,59 +126,20 @@ class ImpedimentRegisteredPage extends StatelessWidget {
                       ),
                     const SizedBox(height: 4),
                     WhiteCard(
-                      color: FigmaColors.greenBg,
-                      child: const Row(
+                      color: OperviaColors.tint,
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.verified_user, color: FigmaColors.green),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Turno protegido',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    color: FigmaColors.navy,
-                                  ),
-                                ),
-                                SizedBox(height: 2),
-                                Text(
-                                  'Tu supervisor lo revisará. No afecta '
-                                  'negativamente tu cumplimiento de turno.',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: FigmaColors.navy,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    WhiteCard(
-                      color: FigmaColors.tint,
-                      child: const Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
+                          const Icon(
                             Icons.info_outline,
-                            size: 18,
-                            color: FigmaColors.muted,
+                            color: OperviaColors.primary,
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'No anticipa un resultado de cumplimiento '
-                              'definitivo; queda registrado en la bandeja de '
-                              'supervisión para su validación formal.',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: FigmaColors.muted,
-                              ),
+                              isSample
+                                  ? 'Este ejemplo no envía datos a supervisión.'
+                                  : 'Pendiente de revisión por supervisión.',
                             ),
                           ),
                         ],
@@ -203,8 +169,8 @@ class _DetailTile extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.value,
-    this.background = FigmaColors.tint,
-    this.foreground = FigmaColors.primary,
+    this.background = OperviaColors.tint,
+    this.foreground = OperviaColors.primary,
   });
 
   final IconData icon;
@@ -233,15 +199,15 @@ class _DetailTile extends StatelessWidget {
                   label,
                   style: const TextStyle(
                     fontSize: 11,
-                    color: FigmaColors.muted,
+                    color: OperviaColors.muted,
                   ),
                 ),
                 Text(
                   value,
                   style: const TextStyle(
                     fontSize: 15,
-                    fontWeight: FontWeight.w800,
-                    color: FigmaColors.navy,
+                    fontWeight: FontWeight.w700,
+                    color: OperviaColors.navy,
                   ),
                 ),
               ],

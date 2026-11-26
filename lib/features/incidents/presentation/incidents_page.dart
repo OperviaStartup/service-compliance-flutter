@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../app/opervia_theme.dart';
+
 import '../../../core/network/api_client.dart';
 import '../../../core/widgets/async_state_view.dart';
 import '../../about_product/presentation/about_product_page.dart';
@@ -110,7 +112,7 @@ class _IncidentsPageState extends State<IncidentsPage> {
               if (widget.repository == null)
                 PopupMenuButton<SampleScenario>(
                   tooltip: 'Simular estado (solo demo)',
-                  icon: const Icon(Icons.tune),
+                  icon: const Icon(Icons.filter_list),
                   onSelected: _selectScenario,
                   itemBuilder: (context) => const [
                     PopupMenuItem(
@@ -152,13 +154,7 @@ class _IncidentsPageState extends State<IncidentsPage> {
         return ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            _ActiveTaskCard(task: task),
-            const SizedBox(height: 16),
-            OutlinedButton.icon(
-              onPressed: () => _openReport(task),
-              icon: const Icon(Icons.warning_amber_outlined),
-              label: const Text('Reportar impedimento o incidencia'),
-            ),
+            _ActiveTaskCard(task: task, onReport: () => _openReport(task)),
           ],
         );
     }
@@ -177,16 +173,11 @@ class SampleDataBanner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          Icon(
-            Icons.science_outlined,
-            size: 18,
-            color: scheme.onTertiaryContainer,
-          ),
+          Icon(Icons.info_outline, size: 18, color: scheme.onTertiaryContainer),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'DATOS DE MUESTRA · Sin conexión con el backend '
-              '(aún no existe el contrato de incidencias).',
+              'DATOS DE MUESTRA · Esta vista simula el reporte.',
               style: Theme.of(context).textTheme.bodySmall
                   ?.copyWith(color: scheme.onTertiaryContainer),
             ),
@@ -226,7 +217,9 @@ class _EmptyView extends StatelessWidget {
 }
 
 class _ActiveTaskCard extends StatelessWidget {
-  const _ActiveTaskCard({required this.task});
+  const _ActiveTaskCard({required this.task, required this.onReport});
+
+  final VoidCallback onReport;
 
   final ActiveTask task;
 
@@ -239,16 +232,67 @@ class _ActiveTaskCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('EN CURSO', style: theme.textTheme.labelSmall),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: OperviaColors.tint,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  child: Text('En curso', style: theme.textTheme.labelMedium),
+                ),
+              ),
+            ),
             const SizedBox(height: 8),
             Text(task.name, style: theme.textTheme.titleMedium),
             const SizedBox(height: 8),
-            Text('${task.building} · ${task.location}'),
-            const SizedBox(height: 4),
-            Text('${task.schedule} · Iniciada ${task.startedAt}'),
+            _TaskLine(
+              icon: Icons.apartment_outlined,
+              text: '${task.building} · ${task.location}',
+            ),
+            const SizedBox(height: 8),
+            _TaskLine(
+              icon: Icons.schedule,
+              text: '${task.schedule} · Iniciada ${task.startedAt}',
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed: onReport,
+                icon: const Icon(Icons.warning_amber_outlined, size: 20),
+                label: const Text(
+                  'Reportar impedimento o incidencia',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+class _TaskLine extends StatelessWidget {
+  const _TaskLine({required this.icon, required this.text});
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Row(
+    children: [
+      Icon(icon, color: OperviaColors.primary, size: 20),
+      const SizedBox(width: 8),
+      Expanded(
+        child: Text(text, style: const TextStyle(color: OperviaColors.muted)),
+      ),
+    ],
+  );
 }

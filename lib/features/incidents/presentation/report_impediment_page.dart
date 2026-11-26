@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../app/opervia_theme.dart';
+
 import '../../../core/network/api_client.dart';
 import '../data/impediment.dart';
 import '../data/incidents_repository.dart';
@@ -85,14 +87,16 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
         borderRadius: BorderRadius.circular(14),
         onTap: _sending ? null : () => setState(() => _reason = reason),
         child: WhiteCard(
-          color: selected ? FigmaColors.greenBg : Colors.white,
-          borderColor: selected ? FigmaColors.green : null,
+          color: selected ? OperviaColors.tint : Colors.white,
+          borderColor: selected ? OperviaColors.primary : null,
           child: Row(
             children: [
               IconSquare(
                 icon: _iconFor(reason),
-                background: selected ? Colors.white : FigmaColors.tint,
-                foreground: selected ? FigmaColors.green : FigmaColors.primary,
+                background: selected ? Colors.white : OperviaColors.tint,
+                foreground: selected
+                    ? OperviaColors.primary
+                    : OperviaColors.primary,
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -103,8 +107,8 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                       reason.title,
                       style: const TextStyle(
                         fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: FigmaColors.navy,
+                        fontWeight: FontWeight.w700,
+                        color: OperviaColors.navy,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -112,15 +116,17 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                       reason.description,
                       style: const TextStyle(
                         fontSize: 12,
-                        color: FigmaColors.muted,
+                        color: OperviaColors.muted,
                       ),
                     ),
                   ],
                 ),
               ),
               Icon(
-                selected ? Icons.check_circle : Icons.radio_button_unchecked,
-                color: selected ? FigmaColors.green : FigmaColors.muted,
+                selected
+                    ? Icons.radio_button_checked
+                    : Icons.radio_button_unchecked,
+                color: selected ? OperviaColors.primary : OperviaColors.muted,
               ),
             ],
           ),
@@ -132,13 +138,12 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: GradientBackground(
+      appBar: AppBar(title: const Text('Reportar Impedimento')),
+      body: OperviaContent(
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const FigmaHeader(title: 'Reportar Impedimento'),
               if (widget.repository.isSampleData) const SampleDataBanner(),
               Expanded(
                 child: ListView(
@@ -156,15 +161,15 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                                 'TAREA EN CURSO',
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: FigmaColors.muted,
+                                  color: OperviaColors.muted,
                                 ),
                               ),
                               Text(
                                 widget.task.name,
                                 style: const TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w800,
-                                  color: FigmaColors.navy,
+                                  fontWeight: FontWeight.w700,
+                                  color: OperviaColors.navy,
                                 ),
                               ),
                             ],
@@ -177,8 +182,8 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                       'Selecciona el motivo principal:',
                       style: TextStyle(
                         fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: FigmaColors.navy,
+                        fontWeight: FontWeight.w700,
+                        color: OperviaColors.navy,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -192,8 +197,8 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                             'Añadir detalle (opcional)',
                             style: TextStyle(
                               fontSize: 14,
-                              fontWeight: FontWeight.w800,
-                              color: FigmaColors.navy,
+                              fontWeight: FontWeight.w700,
+                              color: OperviaColors.navy,
                             ),
                           ),
                         ),
@@ -201,7 +206,7 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                           '${_detail.text.length}/120',
                           style: const TextStyle(
                             fontSize: 12,
-                            color: FigmaColors.muted,
+                            color: OperviaColors.muted,
                           ),
                         ),
                       ],
@@ -223,7 +228,7 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                     ),
                     const SizedBox(height: 12),
                     WhiteCard(
-                      color: FigmaColors.amberBg,
+                      color: OperviaColors.amberBg,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -231,7 +236,7 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                             width: 32,
                             height: 32,
                             decoration: const BoxDecoration(
-                              color: FigmaColors.amber,
+                              color: OperviaColors.amber,
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
@@ -248,8 +253,8 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                                 Text(
                                   'Revisión de Supervisor',
                                   style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    color: FigmaColors.navy,
+                                    fontWeight: FontWeight.w700,
+                                    color: OperviaColors.navy,
                                   ),
                                 ),
                                 SizedBox(height: 2),
@@ -258,7 +263,7 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                                   'para revisión del supervisor.',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: FigmaColors.navy,
+                                    color: OperviaColors.navy,
                                   ),
                                 ),
                               ],
@@ -273,7 +278,7 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                         child: Text(
                           _error!,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(color: FigmaColors.error),
+                          style: const TextStyle(color: OperviaColors.error),
                         ),
                       ),
                     const SizedBox(height: 16),
@@ -289,7 +294,7 @@ class _ReportImpedimentPageState extends State<ReportImpedimentPage> {
                           : () => Navigator.of(context).pop(),
                       child: const Text(
                         'Descartar y volver a la tarea',
-                        style: TextStyle(color: FigmaColors.navy),
+                        style: TextStyle(color: OperviaColors.navy),
                       ),
                     ),
                   ],

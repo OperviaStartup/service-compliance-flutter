@@ -128,7 +128,10 @@ void main() {
       expect(repository.lastReport?.detail, 'Sin jabón');
       expect(find.text('Impedimento registrado'), findsOneWidget);
       expect(find.text('Enviado hoy, 10:15'), findsOneWidget);
-      expect(find.text('Turno protegido'), findsOneWidget);
+      expect(
+        find.text('Pendiente de revisión por supervisión.'),
+        findsOneWidget,
+      );
 
       await tester.tap(find.text('VOLVER A MIS TAREAS'));
       await tester.pumpAndSettle();

@@ -4,6 +4,8 @@ import '../features/authentication/presentation/authentication_page.dart';
 import '../features/compliance/presentation/compliance_page.dart';
 import '../features/incidents/presentation/incidents_page.dart';
 import '../features/obligations/presentation/obligations_page.dart';
+import 'opervia_backdrop.dart';
+import 'opervia_theme.dart';
 
 class OperviaApp extends StatelessWidget {
   const OperviaApp({super.key});
@@ -11,10 +13,8 @@ class OperviaApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
     title: 'Opervia Service Compliance',
     debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff205b62)),
-      useMaterial3: true,
-    ),
+    theme: operviaTheme(compact: MediaQuery.sizeOf(context).width < 360),
+    builder: (context, child) => OperviaBackdrop(child: child!),
     home: const HomePage(),
   );
 }
@@ -40,16 +40,16 @@ class _HomePageState extends State<HomePage> {
     'Cuenta',
   ];
   static const icons = [
-    Icons.assignment_outlined,
+    Icons.assignment_turned_in_outlined,
     Icons.fact_check_outlined,
-    Icons.report_outlined,
+    Icons.warning_amber_outlined,
     Icons.person_outline,
   ];
 
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text('Opervia Service Compliance')),
-    body: pages[selected],
+    body: OperviaContent(child: pages[selected]),
     bottomNavigationBar: NavigationBar(
       selectedIndex: selected,
       onDestinationSelected: (index) => setState(() => selected = index),
