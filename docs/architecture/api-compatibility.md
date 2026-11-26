@@ -9,7 +9,7 @@ Este inventario se basa en el [backend, commit a70a67b](https://github.com/Operv
 - Hay rutas de ejecuciones y evidencias bajo `/api/v1/executions`. No se identificó un controlador de incidencias en esta revisión.
 - Los errores manejados pueden usar `code`, `message` y `timestamp`; confirmar la respuesta de cada ruta, incluidos errores de seguridad, antes de depender de una forma única.
 
-Flutter dispone de transporte HTTP configurable, pero sus pantallas aún no implementan autenticación ni consumen estas rutas. El cliente acepta tokens Bearer por petición; no persiste sesiones. No documentar integración real hasta probar un flujo completo contra un entorno identificado.
+La implementación vigente de Flutter usa los endpoints de acceso, consulta operativa y revisión documentados en el [README](../../README.md). Las sesiones permanecen en memoria y el token Bearer se envía por petición.
 
 ## Coordinación de cambios
 

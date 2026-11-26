@@ -1,6 +1,6 @@
 # Opervia Service Compliance
 
-Base de una aplicación Flutter para supervisión de obligaciones operativas. Las secciones de autenticación, obligaciones, cumplimiento e incidencias son espacios iniciales: todavía no autentican ni consultan datos reales.
+Aplicación Flutter para supervisión de obligaciones operativas. Los supervisores pueden iniciar sesión, consultar el estado operativo y revisar ejecuciones enviadas. La demo de incidencias está disponible desde la pantalla de acceso con datos de muestra.
 
 Versión inicial: `0.0.1` (build `1`).
 
@@ -40,21 +40,20 @@ lib/
     incidents/presentation/
 ```
 
-Cada equipo puede añadir `data` y lógica propia dentro de su funcionalidad cuando la necesite. Mantener contratos entre módulos pequeños y evitar dependencias cruzadas innecesarias. `ApiClient` admite GET y POST, JSON, token Bearer opcional por petición, tiempo de espera y errores básicos; su propietario debe llamar a `close()`. Los widgets de carga y error están disponibles para las pantallas que integren datos; aún no hay consultas activas.
+Cada equipo puede añadir `data` y lógica propia dentro de su funcionalidad cuando la necesite. Mantener contratos entre módulos pequeños y evitar dependencias cruzadas innecesarias. `ApiClient` admite GET y POST, JSON, descarga de imágenes autenticadas, tiempo de espera y errores básicos. Su propietario debe llamar a `close()`.
 
 ## Contratos identificados en el backend
 
-Fuente: [serviceComplianceAPI, revisión a70a67b2](https://github.com/OperviaStartup/serviceComplianceAPI/tree/a70a67b2feb955bc586632be0d1d3966e36891cf). Verificar Swagger (`/swagger-ui.html`) y el código actualizado antes de implementar.
+Usa un backend compatible con [serviceComplianceAPI en ddca9f4](https://github.com/OperviaStartup/serviceComplianceAPI/tree/ddca9f4). Para entrar al área de supervisión necesitas una cuenta activa con rol `SUPERVISOR` en ese entorno.
 
 | Método y ruta | Contrato observado |
 | --- | --- |
-| `POST /api/v1/auth/register` | `fullName`, `email`, `password`; devuelve `token`, `userId`, `fullName`, `email`, `role`. Registra `OPERATOR`. |
-| `POST /api/v1/auth/login` | `email`, `password`; devuelve la misma respuesta de autenticación. |
-| `GET /api/v1/auth/me` | Requiere Bearer; devuelve `id`, `fullName`, `email`, `role`. |
-| `GET /api/v1/obligations` | Requiere autenticación; devuelve obligaciones asignadas al usuario actual. |
-| `POST /api/v1/obligations` | Requiere `SUPERVISOR`; recibe `title`, `description`, `siteName`, `assignedOperatorId`, `dueAt` (instante). |
-
-Una obligación expone `id`, `title`, `description`, `siteName`, `assignedOperatorId`, `status` y `dueAt`. También hay rutas de ejecuciones y evidencias en el backend. En la revisión consultada no existe un controlador de incidencias; acordar ese contrato antes de implementarlo. La consulta actual de obligaciones no es un listado global de supervisor: confirmar con el equipo del backend si AV2 necesita uno. No se han implementado estos flujos ni persistencia de tokens.
+| `POST /api/v1/auth/login` | Correo o documento en `identifier` y `password`. Devuelve los tokens y el rol. |
+| `POST /api/v1/auth/logout` | Revoca el token de renovación. La sesión de Flutter vive en memoria. |
+| `GET /api/v1/operational-obligations` | Obligaciones y conteos del alcance del supervisor, con filtros y paginación. |
+| `GET /api/v1/obligations/{id}/execution` | Obtiene la ejecución vinculada a una obligación. |
+| `GET /api/v1/compliance-reviews/executions/{id}` | Consulta una ejecución enviada, su evidencia, excepciones e información faltante. |
+| `GET /api/v1/evidence/{id}/content` | Descarga la foto privada con autorización. |
 
 ## Trabajo en equipo y pendientes
 
@@ -62,7 +61,7 @@ Consulta la [estrategia de ramas](docs/development/branching-strategy.md), la [g
 
 GitHub Actions verifica el formato de `lib` y `test`, ejecuta `flutter analyze` y `flutter test` en pushes y PR usando Flutter 3.47.9. La integración con la API y las compilaciones móviles no forman parte de ese flujo todavía.
 
-Para AV2: acordar alcance y contratos de supervisión e incidencias; implementar autenticación y almacenamiento seguro de sesión, autorización, módulos y manejo de errores reales; validar conectividad y CORS, pruebas de integración y UX en dispositivos. No subir archivos `.env`, credenciales, certificados de firma ni secretos. El `.gitignore` reduce el riesgo, pero revisa cada cambio antes de confirmarlo.
+Quedan pendientes el registro de evaluaciones, las correctivas, el reporte de cumplimiento completo y la gestión administrativa. La pestaña Reportes muestra los conteos operativos de la consulta autorizada. No subir archivos `.env`, credenciales, certificados de firma ni secretos. El `.gitignore` reduce el riesgo, pero revisa cada cambio antes de confirmarlo.
 
 La firma Android de producción aún no está configurada; antes de distribuir una versión release, el equipo debe configurar su propia clave fuera del repositorio.
 

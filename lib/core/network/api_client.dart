@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 
@@ -12,17 +13,42 @@ class ApiClient {
   final http.Client _client;
   final String _baseUrl;
 
-  Future<dynamic> get(String path, {String? token}) =>
-      _request('GET', path, token: token);
+  Future<dynamic> get(String path, {String? token}) async =>
+      _decode(await _request('GET', path, token: token));
 
-  Future<dynamic> post(String path, {Object? body, String? token}) =>
-      _request('POST', path, body: body, token: token);
+  Future<dynamic> post(String path, {Object? body, String? token}) async =>
+      _decode(await _request('POST', path, body: body, token: token));
 
-  Future<dynamic> _request(
+  Future<Uint8List> getImage(String path, {required String token}) async {
+    final response = await _request(
+      'GET',
+      path,
+      token: token,
+      accept: 'image/jpeg, image/png',
+    );
+    final contentType = response.headers['content-type']?.split(';').first;
+    if (contentType != 'image/jpeg' && contentType != 'image/png') {
+      throw const ApiException('La API devolvió una imagen inválida.');
+    }
+    return response.bodyBytes;
+  }
+
+  Object? _decode(http.Response response) {
+    try {
+      return response.bodyBytes.isEmpty
+          ? null
+          : jsonDecode(utf8.decode(response.bodyBytes));
+    } on FormatException {
+      throw const ApiException('La API devolvió una respuesta inválida.');
+    }
+  }
+
+  Future<http.Response> _request(
     String method,
     String path, {
     Object? body,
     String? token,
+    String accept = 'application/json',
   }) async {
     final base = Uri.tryParse(_baseUrl);
     if (base == null ||
@@ -34,7 +60,7 @@ class ApiClient {
       throw const ApiException('La ruta de la API debe comenzar con /.');
     }
     final request = http.Request(method, base.resolve(path));
-    request.headers['Accept'] = 'application/json';
+    request.headers['Accept'] = accept;
     if (token != null) request.headers['Authorization'] = 'Bearer $token';
     if (body != null) {
       request.headers['Content-Type'] = 'application/json';
@@ -52,17 +78,13 @@ class ApiClient {
           statusCode: response.statusCode,
         );
       }
-      return response.body.isEmpty
-          ? null
-          : jsonDecode(utf8.decode(response.bodyBytes));
+      return response;
     } on TimeoutException {
       throw const ApiException(
         'La conexión con la API agotó el tiempo de espera.',
       );
     } on http.ClientException {
       throw const ApiException('No se pudo conectar con la API.');
-    } on FormatException {
-      throw const ApiException('La API devolvió una respuesta inválida.');
     }
   }
 
